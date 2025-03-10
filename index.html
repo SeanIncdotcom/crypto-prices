@@ -28,12 +28,41 @@
     </script>
 </head>
 <body>
-    <h1>Live Crypto Prices</h1>
-    <p>Bitcoin: <span id="btc-price">Loading...</span></p>
-    <p>Ethereum: <span id="eth-price">Loading...</span></p>
-    <p>XRP: <span id="ripple-price">Loading...</span></p>
-   <p>HBAR: <span id="hedera-hashgraph-price">Loading...</span></p>
-    <p>XLM: <span id="stellar-price">Loading...</span></p>
-    <p>Dogecoin: <span id="doge-price">Loading...</span></p>
+   <h1>Live Crypto Prices</h1>
+<p>Bitcoin: <span id="btc-price">Loading...</span></p>
+<p>Ethereum: <span id="eth-price">Loading...</span></p>
+<p>XRP: <span id="xrp-price">Loading...</span></p>
+<p>Hedera: <span id="hbar-price">Loading...</span></p>
+<p>Stellar: <span id="xlm-price">Loading...</span></p>
+<p>Dogecoin: <span id="doge-price">Loading...</span></p>
+
+<script>
+    async function fetchCryptoPrices() {
+        const url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple,hedera-hashgraph,stellar,dogecoin&vs_currencies=usd";
+        
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            document.getElementById("btc-price").innerText = `$${data.bitcoin.usd}`;
+            document.getElementById("eth-price").innerText = `$${data.ethereum.usd}`;
+            document.getElementById("xrp-price").innerText = `$${data.ripple.usd}`;
+            document.getElementById("hbar-price").innerText = `$${data["hedera-hashgraph"].usd}`;
+            document.getElementById("xlm-price").innerText = `$${data.stellar.usd}`;
+            document.getElementById("doge-price").innerText = `$${data.dogecoin.usd}`;
+        } catch (error) {
+            console.error("Error fetching crypto prices:", error);
+            document.getElementById("btc-price").innerText = "Failed to load.";
+            document.getElementById("eth-price").innerText = "Failed to load.";
+            document.getElementById("xrp-price").innerText = "Failed to load.";
+            document.getElementById("hbar-price").innerText = "Failed to load.";
+            document.getElementById("xlm-price").innerText = "Failed to load.";
+            document.getElementById("doge-price").innerText = "Failed to load.";
+        }
+    }
+
+    setInterval(fetchCryptoPrices, 10000); // Refresh prices every 10 seconds
+    window.onload = fetchCryptoPrices;
+</script>
 </body>
 </html>
